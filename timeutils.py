@@ -4,6 +4,7 @@ Created on Apr 9, 2012
 @author: peng
 '''
 import datetime
+from calendar import monthrange
 
 _EPOCH = datetime.datetime(1970, 1, 1)
 
@@ -31,3 +32,12 @@ def get_last_week(value=None):
         week_days.append(end_date)
         days -= 1
     return week_days
+
+
+def get_month_day_range(date_string, date_fromat):
+    '''get month day range'''
+    date = datetime.datetime.strptime(date_string, date_fromat)
+    month_days = monthrange(date.year, date.month)[1]
+    start_date = datetime.datetime(date.year, date.month, 1)
+    end_date = start_date + datetime.timedelta(days=month_days - 1)
+    return start_date, end_date

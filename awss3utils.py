@@ -15,7 +15,7 @@ class S3():
         self.bucket = bucket
 
     def get_files(self, path):
-        bucket = self.conn.get_bucket(self.bucket)
+        bucket = self.conn.get_bucket(self.bucket, validate=False)
         bucket_list = bucket.list(path)
         files = []
         for b in bucket_list:
@@ -28,7 +28,7 @@ class S3():
             s3_key: input/test/xxx.log-20111117
             local_folder:/home/peng/test
         '''
-        bucket = self.conn.get_bucket(self.bucket)
+        bucket = self.conn.get_bucket(self.bucket, validate=False)
         key = bucket.get_key(s3_key)
         local_file = os.path.join(local_folder, os.path.basename(key.name))
         if os.path.exists(local_file):
@@ -48,7 +48,7 @@ class S3():
         local_folder = os.path.dirname(local_file)
         if not os.path.exists(local_folder):
             os.makedirs(local_folder)
-        bucket = self.conn.get_bucket(self.bucket)
+        bucket = self.conn.get_bucket(self.bucket, validate=False)
         key = bucket.get_key(s3_key)
         key.get_contents_to_filename(local_file)
         return local_file
@@ -59,7 +59,7 @@ class S3():
             local_file: /home/peng/test.log
             s3_path:input/test/
         '''
-        bucket = self.conn.get_bucket(self.bucket)
+        bucket = self.conn.get_bucket(self.bucket, validate=False)
         key = Key(bucket, s3_file)
         key.set_contents_from_filename(local_file)
 
@@ -68,6 +68,6 @@ class S3():
         parameters:
             s3_key: input/test/xxx
         '''
-        bucket = self.conn.get_bucket(self.bucket)
+        bucket = self.conn.get_bucket(self.bucket, validate=False)
         for key in bucket.list(s3_key):
             key.delete()
